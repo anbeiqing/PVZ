@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="植物/植物.vcxproj" Id="8ab4ee79-f5bf-437e-b4e6-ab1f4af7aaa1" />
+</Solution>

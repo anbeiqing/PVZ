@@ -1,0 +1,76 @@
+#include "VisualInterface.h"
+#include"ResourceManager.h"
+
+
+LayerInterface::LayerInterface()
+{
+	mainWorld.Layers.insert(this);
+}
+
+LayerInterface::~LayerInterface()
+{
+	mainWorld.Layers.erase(this);
+	
+}
+
+void LayerInterface::SetLayer(int layer)
+{
+	mainWorld.Layers.erase(this);
+	this->layer = layer;
+	mainWorld.Layers.insert(this);
+}
+
+int LayerInterface::GetLayer() const
+{
+	return layer;
+}
+
+void ImageInterface::RotateImage(double radian)
+{
+	radian = -radian;
+	float fSin = (float)sin(radian), fCos = (float)cos(radian);
+	int w = sprite->getwidth(), h = sprite->getheight();
+	POINT points[4] = { { 0, 0 },{ w, 0 },{ 0, h },{ w, h } };
+	int min_x = 0, min_y = 0;
+	int max_x = 0, max_y = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		points[i] = {
+			(int)(points[i].x * fCos - points[i].y * fSin),
+			(int)(points[i].x * fSin + points[i].y * fCos)
+		};
+		min_x = min(min_x, points[i].x);
+		min_y = min(min_y, points[i].y);
+		max_x = max(max_x, points[i].x);
+		max_y = max(max_y, points[i].y);
+	}
+
+	int nw = max_x - min_x;
+	int nh = max_y - min_y;
+	int nSize = nw * nh;
+
+
+	if (!copy)copy = new IMAGE(nw, nh);
+	copy->Resize(nw, nh);
+	spriteInfo.endLoc = { nw, nh };
+
+	DWORD* pNewBuf = GetImageBuffer(copy);
+	const DWORD* pBuf = GetImageBuffer(sprite);
+
+	for (int i = min_x, ni = 0; ni < nw; ++i, ++ni)						// i 用于映射原图像坐标，ni 用于定位旋转后图像坐标
+	{
+		for (int j = min_y, nj = 0; nj < nh; ++j, ++nj)
+		{
+			pNewBuf[nj * nw + ni] = 0;
+			int nx = (int)(i * fCos + j * fSin);							// 从旋转后的图像坐标向原图像坐标映射
+			int ny = (int)(-i * fSin + j * fCos);
+			if (nx >= 0 && nx < w && ny >= 0 && ny < h)				// 若目标映射在原图像范围内，则拷贝色值
+				pNewBuf[nj * nw + ni] = pBuf[ny * w + nx];
+		}
+	}
+}
+
+void ImageInterface::LoadSprite(std::string name)
+{
+	sprite = mainWorld.resourcePool->Fetch(name);
+}

@@ -1,0 +1,29 @@
+#include"BaseBullet.h"
+//#include"BaseZombie.h"
+#include"Collider.h"
+
+
+BaseBullet::BaseBullet()
+{
+	renderer = GetComponentByClass<SpriteRenderer>();
+	renderer->SetLayer(2);
+	circle = ConstructComponent<CircleCollider>();
+	circle->SetAttachTo(root);
+	circle->SetRadius(14);
+	circle->SetType(CollisionType::Bullet);
+}
+
+void BaseBullet::BeginPlay()
+{
+	Sprite::BeginPlay();
+	//circle->OnComponentBeginOverlap.AddDynamic(this, &BaseBullet::OnOverlap);
+}
+
+//void BaseBullet::OnOverlap(Collider* overlapComp, Collider* otherComp, Actor* otherActor)
+//{
+//	BaseZombie* ABaseZombie = Cast<BaseZombie>(otherActor);
+//	if (!ABaseZombie)return;
+//
+//	ABaseZombie->GetDamage(damage);
+//	Destroy();
+//}
