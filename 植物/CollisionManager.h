@@ -14,7 +14,6 @@ enum class CollisionType :uint8_t
 };
 class CollisionManager
 {
-	std::unordered_map<std::string, std::unordered_set<std::string>>collisionmaps;
 public:
 	CollisionManager();
 
