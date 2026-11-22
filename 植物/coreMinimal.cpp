@@ -24,9 +24,11 @@ void Component::Destruct()
 void SceneComponent::process_Destruct()
 {
 	//子组件必须全部递归销毁（原来的实现 children 为空时直接返回，叶子组件既不析构也不注销，纯泄漏）
-	while (!children.empty()) {
+	while (!children.empty())
+	{
 		SceneComponent* child = *children.begin();
 		child->Destruct();
+		children.erase(children.begin()); // 【关键】删掉这一行就是死循环！
 	}
 	Component::Destruct();
 }

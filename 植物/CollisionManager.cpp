@@ -10,7 +10,7 @@ void CollisionManager::Initialize()
 CollisionManager::CollisionManager()
 {
 	collisionMap.insert({ int(CollisionType::Default) * int(CollisionType::Default) + int(CollisionType::Default) * int(CollisionType::Default) });
-}
+	}
 
 
 bool CollisionManager::FindMapping(CollisionType type1, CollisionType type2)

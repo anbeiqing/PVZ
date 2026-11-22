@@ -69,7 +69,7 @@ public:
 	Collider() { mainWorld.GameColliders.insert(this); }
 	virtual ~Collider() { mainWorld.GameColliders.erase(this); Clear(); }
 	const std::vector<Object*>& GetCollisions(CollisionType type);
-	
+
 	int GetLayer()const { return Layer; }
 	void SetLayer(int layer) { this->Layer = layer; }
 

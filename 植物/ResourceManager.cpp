@@ -57,7 +57,7 @@ void ResourceManager::Initialize()
 	//加载图片资源
 	Load("bg0","res/images/bg3.jpg",1400,600);
 	Load("sun", "res/animations/bullets/sun.png", 483, 160, 12, 2, 6);
-
+	
 
 
 	//植物

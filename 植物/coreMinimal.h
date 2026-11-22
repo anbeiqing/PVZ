@@ -161,7 +161,7 @@ public:
 		pOwner = owner;
 	}
 	virtual void Destruct();
-
+	
 	//虚析构：Destruct() 中 delete this 时的静态类型是 Component*，
 	//若析构函数非虚，派生类（Collider/SpriteRenderer/LayerInterface）的析构不会执行，
 	//已释放对象仍残留在 GameColliders/Layers 里，下一帧遍历即崩溃
