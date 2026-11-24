@@ -1,6 +1,7 @@
 #include"BaseBullet.h"
-//#include"BaseZombie.h"
+#include"Basezombie.h"
 #include"Collider.h"
+#include"Delegate.h"
 
 
 BaseBullet::BaseBullet()
@@ -16,14 +17,14 @@ BaseBullet::BaseBullet()
 void BaseBullet::BeginPlay()
 {
 	Sprite::BeginPlay();
-	//circle->OnComponentBeginOverlap.AddDynamic(this, &BaseBullet::OnOverlap);
+	circle->OnComponentBeginOverlap.AddDynamic(this,&BaseBullet::OnOverlap);
 }
 
-//void BaseBullet::OnOverlap(Collider* overlapComp, Collider* otherComp, Actor* otherActor)
-//{
-//	BaseZombie* ABaseZombie = Cast<BaseZombie>(otherActor);
-//	if (!ABaseZombie)return;
-//
-//	ABaseZombie->GetDamage(damage);
-//	Destroy();
-//}
+void BaseBullet::OnOverlap(Collider* overlapComp, Collider* otherComp, Object* otherActor)
+{
+	BaseZombie* ABaseZombie = Cast<BaseZombie>(otherActor);
+	if (!ABaseZombie)return;
+
+	ABaseZombie->GetDamage(damage);
+	Destory();
+}

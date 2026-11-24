@@ -6,6 +6,7 @@
 
 #include"Math.h"
 #include"PeaShooter.h"
+#include"Zombie.h"
 
 BattleLevel::BattleLevel()
 {
@@ -14,7 +15,8 @@ BattleLevel::BattleLevel()
 
 
 	GameStatics::CreateObject<PeaShooter>(Vector2D(200, 200));
-	GameStatics::CreateObject<Sun> (Vector2D(200, 200));
+	GameStatics::CreateObject<Zombie>(Vector2D(400, 175));
+	GameStatics::CreateObject<Sun> (Vector2D(200, 0));
 }
 
 void BattleLevel::Update()

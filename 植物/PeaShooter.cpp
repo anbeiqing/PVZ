@@ -4,7 +4,7 @@
 
 PeaShooter::PeaShooter()
 {
-	renderer->SetLayer(2);
+	
 	idle.Load("peashooter");
 	idle.SetInterval(0.06f);
 	ani->Insert("idle", idle);
@@ -21,5 +21,5 @@ void PeaShooter::BeginPlay()
 
 void PeaShooter::Shoot()
 {
-	GameStatics::CreateObject<Pea>(GetWorldPosition());
+	GameStatics::CreateObject<Pea>(GetWorldPosition()+Vector2D(15,5));
 }

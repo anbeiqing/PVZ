@@ -44,12 +44,14 @@ public:
 	}
 	void BroadCast(Args... args);
 	void operator()(Args... args) { BroadCast(args...); }
+
+
+};
 #define AddDynamic(obj, func) Add(obj, func)
-#define RemoveDynamic Remove(obj, func) Remove(obj, func)
+#define RemoveDynamic(obj, func) Remove(obj, func)
 #define AddLambda(callback) Add(callback)
 #define RemoveLambda(callback) Remove(callback)
 
-};
 #define DECLARE_MULTI_PARAM_WITH_RETURN_UNICAST_DELEGATE_CLASS(Name, R, ...) class Name : public UnicastDelegate<R,__VA_ARGS__> {};
 #define DECLARE_NO_PARAM_WITH_RETURN_UNICAST_DELEGATE_CLASS(Name, R) class Name : public UnicastDelegate<R> {};
 

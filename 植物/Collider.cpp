@@ -27,8 +27,8 @@ void Collider::Clear()
 {
     for (auto& ano : collisions) {
         ano->collisions.erase(this);
-        OnComponentEndOverlap.BroadCast(ano, ano->pOwner);
-        ano->OnComponentEndOverlap.BroadCast(this, pOwner);
+        OnComponentEndOverlap.BroadCast(this, ano, ano->pOwner);
+        ano->OnComponentEndOverlap.BroadCast(ano, this, pOwner);
     }
     collisions.clear();
 }
@@ -40,8 +40,8 @@ void Collider::Erase()
         if (!CollisionJudge(ano)) {
             ano->collisions.erase(this);
             collisions_to_rease.push_back(ano);
-            OnComponentEndOverlap.BroadCast(ano, ano->pOwner);
-            ano->OnComponentEndOverlap.BroadCast(this, pOwner);
+            OnComponentEndOverlap.BroadCast(this, ano, ano->pOwner);
+            ano->OnComponentEndOverlap.BroadCast(ano, this, pOwner);
             
         }
     }
@@ -54,8 +54,8 @@ void Collider::Insert(Collider* another)
         && collisions.find(another) == collisions.end() && CollisionJudge(another)) {
         collisions.insert(another);
         another->collisions.insert(this);
-        OnComponentBeginOverlap.BroadCast(another, another->pOwner);
-        another->OnComponentBeginOverlap.BroadCast(this, pOwner);
+        OnComponentBeginOverlap.BroadCast(this, another, another->pOwner);
+        another->OnComponentBeginOverlap.BroadCast(another, this, pOwner);
         
     }
 }
@@ -176,7 +176,7 @@ bool BoxCollider::IsMouseOver()
         && pos_m.y <= pos.y + size.y && pos_m.y >= pos.y ;
 }
 
-void CollisionDelegate::BroadCast(Collider* OverlapCollider, Object* OverlapActor)
+void CollisionDelegate::BroadCast(Collider* OverlapCollider, Collider* OtherCollider, Object* OtherActor)
 {
-    for (auto& callback : callbacks)callback(OverlapCollider, OverlapActor);
+    for (auto& callback : callbacks)callback(OverlapCollider, OtherCollider, OtherActor);
 }

@@ -96,6 +96,12 @@
     <ClInclude Include="Pea.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BaseZombie.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="coreMinimal.cpp">
@@ -171,6 +177,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Pea.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseZombie.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -172,29 +172,30 @@ void World::Update()
 			arr_j.clear();
 		}
 	}
-	for (auto it :GameColliders) {
-		
+	for (auto it : GameColliders) {
+
 		if (it->GetCollisionMode() == CollisionMode::None)continue;
-		Vector2D half;
+		//用碰撞体的真实包围盒划分格子：圆 = [左上角, 左上角+直径]，矩形 = [左上角, 左上角+尺寸]
+		//（原来给矩形补偿了半尺寸、圆心也减了半径，等于按「中心点±半尺寸」划分，和实际判定用的包围盒对不上）
+		Vector2D pos = it->GetWorldPosition();
+		Vector2D end = pos;
 		if (it->GetShape() == Collider::Circle) {
 			float a = Cast<CircleCollider>(it)->GetRadius();
-			half = {a,a};
+			end = pos + Vector2D(a * 2, a * 2);
 		}
 		else {
-			half = Cast<BoxCollider>(it)->GetSize() / 2;
+			end = pos + Cast<BoxCollider>(it)->GetSize();
 		}
-		Vector2D pos = (it)->GetWorldPosition();
-		pos -= half;
-		int x = int(pos.x) / 100;x = Math::Clamp(x, 0,7);
-		int y = int(pos.y) / 100;y= Math::Clamp(y, 0,5);
-		pos += half * 2;
-		int x_1 = int(pos.x) / 100;x_1 = Math::Clamp(x_1, 0,7);
-		int y_1 = int(pos.y) / 100;y_1 = Math::Clamp(y_1, 0,5);
-		for (int i = x;i < x_1;++i) {
-			for (int j = y;j < y_1;++j) {
+		int x = Math::Clamp(int(pos.x) / 100, 0, 7);
+		int y = Math::Clamp(int(pos.y) / 100, 0, 5);
+		int x_1 = Math::Clamp(int(end.x) / 100, 0, 7);
+		int y_1 = Math::Clamp(int(end.y) / 100, 0, 5);
+		//必须用 <=：碰撞体整个落在同一个格子里时 x_1 == x，写成 < 就一个格子都不插入，
+		//该碰撞体对所有物体都不可见（子弹半径只有14，绝大多数帧都被漏掉 → 子弹偶尔穿过僵尸）
+		for (int i = x; i <= x_1; ++i) {
+			for (int j = y; j <= y_1; ++j) {
 				ColliderZones[i][j].insert(it);
 			}
-
 		}
 	}
 	for (auto& arr_i : ColliderZones) {

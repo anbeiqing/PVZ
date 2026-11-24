@@ -65,6 +65,10 @@ void ResourceManager::Initialize()
 
 	//子弹
 	Load("pea", "res/animations/bullets/pea.png", 28, 28);
+
+
+	//僵尸资源
+	Load("normalwalk", "res/animations/zombies/normal/walk.png", 1000, 695, 46, 5, 10);
 	
 }
 

@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="BaseZombie.h" />
     <ClInclude Include="BattleController.h" />
     <ClInclude Include="BattleLevel.h" />
     <ClInclude Include="Camera.h" />
@@ -177,11 +178,13 @@
     <ClInclude Include="VisualInterface.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Widgets.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BaseBullet.cpp" />
     <ClCompile Include="BasePlant.cpp" />
+    <ClCompile Include="BaseZombie.cpp" />
     <ClCompile Include="BattleController.cpp" />
     <ClCompile Include="BattleLevel.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -204,6 +207,7 @@
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="VisualInterface.cpp" />
     <ClCompile Include="Widgets.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

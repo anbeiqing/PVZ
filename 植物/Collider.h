@@ -3,6 +3,7 @@
 #include<unordered_map>
 #include<functional>
 #include"CollisionManager.h"
+#include"Delegate.h"//AddDynamic/RemoveDynamic 宏统一由 Delegate.h 提供
 
 
 
@@ -25,38 +26,38 @@ struct HitResult
 //碰撞委托
 class CollisionDelegate
 {
-	std::vector<std::function<void(Collider*, Object*)>>callbacks;
+	//回调签名：触发回调的碰撞器、对方碰撞器、对方所属对象
+	using Callback = std::function<void(Collider*, Collider*, Object*)>;
+	std::vector<Callback>callbacks;
 public:
 	template<typename T>
-	void Add(T* obj, void(T::* func)(Collider*, Object*)) {
-		callbacks.push_back(std::bind(func, obj, std::placeholders::_1, std::placeholders::_2));
+	void Add(T* obj, void(T::* func)(Collider*, Collider*, Object*)) {
+		callbacks.push_back(std::bind(func, obj, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
-	void Add(std::function<void(Collider*, Object*)>func) {
+	void Add(Callback func) {
 		callbacks.push_back(func);
 	}
 	template<typename T>
-	void Remove(T* obj, void(T::* func)(Collider*, Object*))
+	void Remove(T* obj, void(T::* func)(Collider*, Collider*, Object*))
 	{
-		std::function<void(Collider*, Object*)>targetFunc = std::bind(func, obj, std::placeholders::_1, std::placeholders::_2);
+		Callback targetFunc = std::bind(func, obj, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		for (auto it = callbacks.begin();it!= callbacks.end();++it) {
-			if (it->target<void(Collider*, Object*)>() == targetFunc.target<void(Collider*, Object*)>())
+			if (it->target<Callback>() == targetFunc.target<Callback>())
 			{
 				callbacks.erase(it);break;
 			}
 		}
 	}
-	void Remove(std::function<void(Collider*, Object*)>func)
+	void Remove(Callback func)
 	{
 		for (auto it = callbacks.begin();it != callbacks.end();++it) {
-			if (it->target<void(Collider*, Object*)>() == func.target<void(Collider*, Object*)>())
+			if (it->target<Callback>() == func.target<Callback>())
 			{
 				callbacks.erase(it);break;
 			}
 		}
 	}
-	void BroadCast(Collider* OverlapCollider, Object* OverlapActor);
-#define AddDynamic Add
-#define RemoveDynamic Remove
+	void BroadCast(Collider* OverlapCollider, Collider* OtherCollider, Object* OtherActor);
 };
 
 //碰撞
@@ -92,7 +93,7 @@ protected:
 	virtual bool CollisionJudge(Collider* anther) = 0;
 	virtual bool IsMouseOver() = 0;//鼠标
 private:
-	CollisionType type;//类型
+	CollisionType type = CollisionType::Default;//类型（务必初始化，否则未定义的枚举值会让碰撞映射全部失效）
 	int Layer = 0;//优先级
 
 	CollisionMode mode = CollisionMode::Trigger;
