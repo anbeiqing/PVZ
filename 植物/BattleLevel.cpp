@@ -35,12 +35,12 @@ void BattleLevel::Render()
 		sunshine = pController->GetSunshineNum();
 
 	setfillcolor(RGB(255, 247, 213));
-	solidrectangle(10, 24, 130, 56);
+	//solidrectangle(10, 24, 130, 56);
 	setlinecolor(RGB(120, 90, 40));
-	rectangle(10, 24, 130, 56);
+	//rectangle(10, 24, 130, 56);
 
 	setbkmode(TRANSPARENT);
 	settextcolor(RGB(90, 60, 20));
 	settextstyle(20, 0, "微软雅黑");
-	outtextxy(22, 28, (std::string("阳光:") + std::to_string(sunshine)).c_str());
+	//outtextxy(22, 28, (std::string("阳光:") + std::to_string(sunshine)).c_str());
 }

@@ -23,8 +23,8 @@ public:
 	static T* FindObjectOfName(std::string tagName);
 
 	//创建UI对象
-	//template<class T>
-	//static T* CreateUI();
+	template<class T>
+	static T* CreateUI();
 
 	//加载地图
 	static void OpenLevel(std::string levelName);
@@ -65,6 +65,18 @@ inline T* GameStatics::FindObjectOfName(std::string tagName)
 	{
 		if (obj->GetName() == tagName)return obj;
 	}
+	return nullptr;
+}
+template<class T>
+inline T* GameStatics::CreateUI()
+{
+	T* pUI = new T;
+	if (pUI && static_cast<UserInterface*>(pUI))
+	{
+		mainWorld.UserInterfaces.insert(pUI);
+		return pUI;
+	}
+	delete pUI;
 	return nullptr;
 }
 

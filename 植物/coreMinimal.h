@@ -216,6 +216,14 @@ public:
 	//若析构函数非虚，派生类（Collider/SpriteRenderer/LayerInterface）的析构不会执行，
 	//已释放对象仍残留在 GameColliders/Layers 里，下一帧遍历即崩溃
 	virtual ~Component() = default;
+
+
+
+	//激活组件
+	virtual void Activate();
+
+	//停用组件
+	virtual void Deactivate();
 };
 
 //场景组件，处理场景属性

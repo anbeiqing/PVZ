@@ -224,9 +224,11 @@ DECLARE_NO_PARAM_MULTICAST_DELEGATE_CLASS(ButtonDelegate)
 /* 按钮部件 */
 class Button :public Image
 {
-	IMAGE* normal;
-	IMAGE* hover;
-	IMAGE* pressed;
+	//这三个指针必须初始化：LoadHoverPicture/LoadClickPicture 没被调用时它们是野指针，
+	//Button::Update 里 if (!hover && !pressed) 会读到随机值，sprite 就被赋成垃圾
+	IMAGE* normal = nullptr;
+	IMAGE* hover = nullptr;
+	IMAGE* pressed = nullptr;
 
 	bool isPressed = false;
 	bool isHover = false;

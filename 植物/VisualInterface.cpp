@@ -1,5 +1,6 @@
 #include "VisualInterface.h"
 #include"ResourceManager.h"
+#include"Math.h"
 
 
 LayerInterface::LayerInterface()
@@ -73,4 +74,14 @@ void ImageInterface::RotateImage(double radian)
 void ImageInterface::LoadSprite(std::string name)
 {
 	sprite = mainWorld.resourcePool->Fetch(name);
+}
+
+void ImageInterface::SetStartAndEndLoc(Pair start, Pair end)
+{
+	start.x = Math::Clamp(start.x, 0, spriteInfo.size.x);
+	start.y = Math::Clamp(start.y, 0, spriteInfo.size.y);
+	end.x = Math::Clamp(end.x, 0, spriteInfo.size.x);
+	end.y = Math::Clamp(end.y, 0, spriteInfo.size.y);
+	spriteInfo.startLoc = start;
+	spriteInfo.endLoc = end;
 }

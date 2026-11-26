@@ -24,6 +24,9 @@ struct SpriteInfo
 	Pair startLoc = Pair(0, 0);
 	Pair endLoc = Pair(0, 0);
 };
+
+
+
 class ImageInterface {
 	friend class Animator;
 protected:
@@ -48,6 +51,12 @@ public:
 	void SetTransprancy(BYTE tr) {
 		alpha = tr;
 	}
+	//当前贴图的像素尺寸（动画每帧可能不同，所以每帧取，不要缓存）
+	Vector2D GetSpriteSize()const {
+		return sprite ? Vector2D(float(sprite->getwidth()), float(sprite->getheight())) : Vector2D(0, 0);
+	}
 	//加载静态图片
 	void LoadSprite(std::string name);
+	/* 推荐设置非动画资源 */
+	void SetStartAndEndLoc(Pair start, Pair end);
 };

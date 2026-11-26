@@ -21,6 +21,16 @@ void Component::Destruct()
 	delete this;//派生类析构会执行（~Component 为虚），因此 ~Collider/~LayerInterface 等会正常注销
 }
 
+void Component::Activate()
+{
+	;
+}
+
+void Component::Deactivate()
+{
+	;
+}
+
 void SceneComponent::process_Destruct()
 {
 	//子组件必须全部递归销毁（原来的实现 children 为空时直接返回，叶子组件既不析构也不注销，纯泄漏）

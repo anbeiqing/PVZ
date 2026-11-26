@@ -154,6 +154,7 @@
     <ClInclude Include="BaseZombie.h" />
     <ClInclude Include="BattleController.h" />
     <ClInclude Include="BattleLevel.h" />
+    <ClInclude Include="BattleUI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Controller.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="SeedUI.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="sun.h" />
@@ -188,6 +190,7 @@
     <ClCompile Include="BaseZombie.cpp" />
     <ClCompile Include="BattleController.cpp" />
     <ClCompile Include="BattleLevel.cpp" />
+    <ClCompile Include="BattleUI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
@@ -201,6 +204,7 @@
     <ClCompile Include="PeaShooter.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="SeedUI.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="sun.cpp" />

@@ -1,10 +1,18 @@
 #pragma once
 #include"Controller.h"
 #include"Timer.h"
+#include"BasePlant.h"
 class BattleController :public Controller {
+
+	friend class SeedUI;
+
 	Timer OverallTimeHandle;
+
+	Timer SunshineTimerHandle;
 	Timer ShakeTimeHandle;
 	int sunshineNum = 50;//阳光数，初始值对齐原作
+
+	BasePlant* seedToPlant = nullptr;
 public:
 	BattleController();
 
@@ -18,4 +26,7 @@ public:
 	int GetSunshineNum()const { return sunshineNum; }
 	void SetSunshineNum(int num) { sunshineNum = num; }
 	void AddSunshineNum(int num) { sunshineNum += num; }
+	void PlantSeed();
+	//天上掉阳光
+	void ProduceSun();
 };

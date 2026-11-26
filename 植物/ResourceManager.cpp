@@ -72,6 +72,21 @@ void ResourceManager::Initialize()
 	Load("normalwalk", "res/animations/zombies/normal/walk.png", 1000, 695, 46, 5, 10);
 	Load("normaldeath", "res/animations/zombies/die.png", 166, 1440, 10, 10, 1);
 	Load("normaleat", "res/animations/zombies/normal/eat.png", 1000, 556, 39, 4, 10);
+
+	//种子银行
+	Load("seedbank", "res/images/bar.png", 530, 91);
+
+	//卡片
+	Load("card1", "res/images/cards/card1.png", 54, 77);
+	Load("card2", "res/images/cards/card2.png", 54, 77);
+	Load("card3", "res/images/cards/card3.png", 54, 77);
+	Load("card4", "res/images/cards/card4.png", 54, 77);
+	Load("card5", "res/images/cards/card5.png", 54, 77);
+	Load("card6", "res/images/cards/card6.png", 54, 77);
+	Load("card7", "res/images/cards/card7.png", 54, 77);
+	Load("card8", "res/images/cards/card8.png", 54, 77);
+	Load("black", "res/images/cards/black.png", 54, 77);
+	Load("gray", "res/images/cards/black.png", 54, 77);
 	
 	
 }

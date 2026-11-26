@@ -127,17 +127,20 @@ void Characters::PrintCharacters(Vector2D pos, CharactersPattern pattern)
 
 Vector2D Widget::GetLayoutOffset() const
 {
+    //部件的位置一律以"中心点"为准（Image/Text 渲染时都减去半个尺寸），
+    //所以相对父级的位置偏移也应该以父级中心为原点：左上角 = (-w/2, -h/2)
+    Vector2D ps = parent ? parent->Getsize() : Vector2D(0, 0);
     switch (layoutPattern)
     {
-        case LayoutPattern::LeftTop:return Vector2D(0, 0);
-        case LayoutPattern::MiddleTop:return Vector2D(parent->Getsize().x / 2, 0);
-        case LayoutPattern::RightTop:return Vector2D(parent->Getsize().x, 0);
-        case LayoutPattern::LeftMiddle:return Vector2D(0,parent->Getsize().y/2);
-        case LayoutPattern::Center:return Vector2D(parent->Getsize().x / 2, parent->Getsize().y/2);
-        case LayoutPattern::RightMiddle:return Vector2D(parent->Getsize().x , parent->Getsize().y/2);
-        case LayoutPattern::LeftBottom:return Vector2D(0, parent->Getsize().y);
-        case LayoutPattern::MiddleBottom:return Vector2D(parent->Getsize().x / 2, parent->Getsize().y);
-        case LayoutPattern::RightBottom:return Vector2D(parent->Getsize().x, parent->Getsize().y);
+        case LayoutPattern::LeftTop:return Vector2D(-ps.x * 0.5f, -ps.y * 0.5f);
+        case LayoutPattern::MiddleTop:return Vector2D(0, -ps.y * 0.5f);
+        case LayoutPattern::RightTop:return Vector2D(ps.x * 0.5f, -ps.y * 0.5f);
+        case LayoutPattern::LeftMiddle:return Vector2D(-ps.x * 0.5f, 0);
+        case LayoutPattern::Center:return Vector2D(0, 0);
+        case LayoutPattern::RightMiddle:return Vector2D(ps.x * 0.5f, 0);
+        case LayoutPattern::LeftBottom:return Vector2D(-ps.x * 0.5f, ps.y * 0.5f);
+        case LayoutPattern::MiddleBottom:return Vector2D(0, ps.y * 0.5f);
+        case LayoutPattern::RightBottom:return Vector2D(ps.x * 0.5f, ps.y * 0.5f);
         default:return Vector2D(0, 0);
     }
     return Vector2D(0, 0);
@@ -148,25 +151,14 @@ bool Widget::IsUnderCursor() const
     float x = InputComponent::GetMousePosition().x;
     float y = InputComponent::GetMousePosition().y;
 
-    int i = Math::Clamp((int)x / 100, 0, 7);
-    int j = Math::Clamp((int)y / 100, 0, 5);
-    if (mainWorld.UIdetectZones[i][j].empty())
-    {
-        for (auto it = mainWorld.UIdetectZones[i][j].rbegin();it!= mainWorld.UIdetectZones[i][j].rend();++it) {
-            if (Widget* widget=Cast<Widget>(*it))
-            {
-                Vector2D loc = widget->GetScreenPosition();
-                if (x<Getsize().x / 2 + loc.x && x>loc.x - Getsize().x / 2
-                    &&y<Getsize().y/2+loc.y &&y>loc.y-Getsize().y/2){
-                    return true;
-
-                }
-            }
-
-        }
-    }
-
-
+    //原来写成 empty() 才遍历：格子为空时循环一次都不进，永远命中不了；
+    //而且判定的是"这一格里有没有任意一个部件被命中"，不是"我自己被命中"，
+    //于是鼠标停在第一张卡片上时 8 张卡片的信息框会全部叠在鼠标处（最后画的赢）。
+    //UIdetectZones 的分格维护本身也有毛病（只登记到左上角那一格），这里直接做矩形判定最稳。
+    Vector2D loc = GetScreenPosition();
+    Vector2D sz = Getsize();
+    return x<sz.x * 0.5f + loc.x && x>loc.x - sz.x * 0.5f
+        && y<sz.y * 0.5f + loc.y && y>loc.y - sz.y * 0.5f;
 }
 
 Widget::~Widget()
@@ -213,7 +205,8 @@ void Widget::DrawDebugRect()
 
 Vector2D Widget::Getsize() const
 {
-    return Vector2D();
+    //原来这里固定返回 (0,0)：Image 的渲染宽高 = 尺寸 * 源图区域 / 源图宽高 → 0，什么都不画
+    return size;
 }
 
 void Widget::AttachTo(Widget* par)
@@ -292,12 +285,18 @@ void Panel::RemoveMember(Widget* member)
 }
 void Panel::AddMember(UserInterface* member, int index)
 {
+    //根画布挂在面板里时用中心布局，否则会再叠加一次左上角偏移
+    member->rootCanvas->SetLayoutPattern(LayoutPattern::Center);
     member->rootCanvas->AttachTo(this);
     index = Math::Clamp(index, -1, int(members.size()));
     if (index >= 0)members.emplace(members.begin() + index, member->rootCanvas);
     else members.push_back(member->rootCanvas);
     members_ui.push_back(member);
     member->rootCanvas->attachedPanel = this;
+    //被当成面板成员使用的 UserInterface（比如种子卡片 SeedUI）不是通过 AddToViewport 创建的，
+    //它内部的部件默认 uiPattern=None，而 UserInterface::Update 只 Update 非 None 的部件，
+    //于是按钮永远不 Update → 贴图和裁剪区域都是空的，卡片什么也画不出来
+    member->AddToViewport();
     AdjustMemberSizeToUnit(member->rootCanvas);
     AdjustMemberPosition(member->rootCanvas, index >= 0 ? index : members.size() - 1);
 }
@@ -313,13 +312,16 @@ void Panel::AdjustMemberSizeToUnit(Widget* member)
 {
     int x = member->Getsize().x;
     int y = member->Getsize().y;
+    if (x <= 0 || y <= 0)return;//尺寸还没设置，别算出 inf/nan 缩放
     member->SetrelativeScale(unitSize / sqrtf (x*x+y*y));
 }
 
 void HorizontalPanel::AdjustMemberPosition(Widget* member, int index)
 {
     if (index < 0)return;
-    Vector2D pos = Vector2D(index * (unitSize.x + spacing), 0) + Vector2D(unitSize.x, unitSize.y) * 0.5f;
+    //部件位置是中心点：整排以面板中心为轴左右对称，而不是从面板左上角开始摆
+    float start = -Getsize().x * 0.5f + unitSize.x * 0.5f;
+    Vector2D pos = Vector2D(start + index * (unitSize.x + spacing), 0);
     member->SetRelativePosition(pos);
 }
 
@@ -331,7 +333,8 @@ Vector2D HorizontalPanel::Getsize() const
 void VerticalPanel::AdjustMemberPosition(Widget* member, int index)
 {
     if (index < 0)return;
-    Vector2D pos = Vector2D(0, index * (unitSize.y + spacing));
+    float start = -Getsize().y * 0.5f + unitSize.y * 0.5f;
+    Vector2D pos = Vector2D(0, start + index * (unitSize.y + spacing));
     member->SetRelativePosition(pos);
 }
 
@@ -343,7 +346,10 @@ Vector2D VerticalPanel::Getsize() const
 void GridPanel::AdjustMemberPosition(Widget* member, int index)
 {
     if (index < 0)return;
-    Vector2D pos = Vector2D((index % column) * (unitSize.x + spacingX), (index / column) * (unitSize.y + spacingY));
+    float startX = -Getsize().x * 0.5f + unitSize.x * 0.5f;
+    float startY = -Getsize().y * 0.5f + unitSize.y * 0.5f;
+    Vector2D pos = Vector2D(startX + (index % column) * (unitSize.x + spacingX),
+        startY + (index / column) * (unitSize.y + spacingY));
     member->SetRelativePosition(pos);
 }
 
@@ -383,6 +389,13 @@ void Image::Update()
 
     if (copy)spriteInfo.size = Pair(copy->getwidth(), copy->getheight());
     else spriteInfo.size = Pair(sprite->getwidth(), sprite->getheight());
+
+    //源图的裁剪区域默认取整张图（Button 在 Load*Picture 里、SeedUI 在冷却动画里会自己覆盖）
+    if (spriteInfo.startLoc.x == 0 && spriteInfo.startLoc.y == 0
+        && spriteInfo.endLoc.x == 0 && spriteInfo.endLoc.y == 0)
+    {
+        spriteInfo.endLoc = spriteInfo.size;
+    }
 
     if (GetScreenRotation() != angle)
     {
@@ -435,11 +448,12 @@ void Button::Update()
     else if (isPressed && !IsMousePressed()) { OnMousePressedEnd.BroadCast(); isPressed = false; }
 
 
-    if (!hover && !pressed) { sprite = normal; return; }
-
-    if (!isHover) { sprite = normal; spriteInfo.endLoc = { normal->getwidth(), normal->getheight() }; }
-    else if (!isPressed) { sprite = hover; spriteInfo.endLoc = { hover->getwidth(), hover->getheight() }; }
-    else { sprite = pressed; spriteInfo.endLoc = { pressed->getwidth(), pressed->getheight() }; }
+    //没加载悬停/按下贴图时回退到普通贴图，避免解引用空指针
+    IMAGE* target = normal;
+    if (isHover && !isPressed && hover)target = hover;
+    else if (isPressed && pressed)target = pressed;
+    sprite = target;
+    if (sprite)spriteInfo.endLoc = { sprite->getwidth(), sprite->getheight() };
 }
 
 void Button::LoadNormalPicture(std::string path)

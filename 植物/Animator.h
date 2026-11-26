@@ -63,6 +63,9 @@ public:
 	void Insert(std::string name, Animation& ani);
 
 	Animation* GetNode()const { return aniNode; }
+	//当前动画帧的图片（还没设过动画节点时返回空）
+	//注意：没播放动画时 renderer 的 sprite 是整张图集，尺寸不是一帧的尺寸
+	IMAGE* GetCurrentImage()const { return aniNode ? aniNode->images[aniNode->index] : nullptr; }
 	void SetNode(std::string nodeName);
 	void SetCalled(bool called) { isCalled = called; }
 
