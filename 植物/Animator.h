@@ -32,6 +32,7 @@ friend class Animator;
 public:
 	Animation() {
 		clock.Bind(0, this, &Animation::Tick,true);
+		clock.Stop();
 	}
 	void Load(std::string name, Vector2D delta = Vector2D(0, 0));
 

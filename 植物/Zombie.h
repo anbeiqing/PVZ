@@ -7,5 +7,6 @@ class Zombie :public BaseZombie
 	Animation idle;
 public:
 	Zombie();
+	void Update();
 	
 };

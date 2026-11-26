@@ -17,6 +17,7 @@ BaseBullet::BaseBullet()
 void BaseBullet::BeginPlay()
 {
 	Sprite::BeginPlay();
+	//添加碰撞事件
 	circle->OnComponentBeginOverlap.AddDynamic(this,&BaseBullet::OnOverlap);
 }
 

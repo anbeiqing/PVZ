@@ -69,6 +69,8 @@ void ResourceManager::Initialize()
 
 	//僵尸资源
 	Load("normalwalk", "res/animations/zombies/normal/walk.png", 1000, 695, 46, 5, 10);
+	Load("normaldeath", "res/animations/zombies/die.png", 166, 1440, 10, 10, 1);
+	Load("normaleat", "res/animations/zombies/normal/eat.png", 1000, 556, 39, 4, 10);
 	
 }
 

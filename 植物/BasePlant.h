@@ -16,6 +16,7 @@ protected:
 	int cost = 0;
 public:
 	BasePlant();
+	void GetDamage(float dmg);
 	virtual void BeginPlay()override;
 };
 

@@ -14,7 +14,16 @@ BasePlant::BasePlant()
 	
 }
 
+void BasePlant::GetDamage(float dmg)
+{
+	blood -= dmg;
+	Blink();//受击闪烁
+	if (blood <= 0) {
+		Destory();
+	}
+}
+
 void BasePlant::BeginPlay()
 {
-	;
+	Sprite::BeginPlay();
 }

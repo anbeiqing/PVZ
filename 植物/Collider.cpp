@@ -31,6 +31,7 @@ void Collider::Clear()
         ano->OnComponentEndOverlap.BroadCast(ano, this, pOwner);
     }
     collisions.clear();
+    
 }
 
 void Collider::Erase()
@@ -146,10 +147,11 @@ bool BoxCollider::CollisionJudge(Collider* another)
     }
     else {
         BoxCollider* box = Cast<BoxCollider>(another);
-        Vector2D pos = GetWorldPosition() - size /2;
-        Vector2D pos_a = box->GetWorldPosition() - box->GetSize() / 2;
-        return (pos.x<pos_a.x + box->GetSize().x && pos.x + size.x>pos_a.x
-            && pos.y<pos.y + box->GetSize().y && pos.y + size.y>pos_a.y);
+        //盒-盒统一用「左上角 + 尺寸」的 AABB 判定，与 DrawDebugLine/IsMouseOver/圆-盒一致
+        //（原实现把 pos 减了半尺寸当中心，且 y 轴写成了 pos.y<pos.y+... 恒为真，等于完全不判 y）
+        Vector2D pos = GetWorldPosition(), size_a = box->GetSize(), pos_a = box->GetWorldPosition();
+        return (pos.x < pos_a.x + size_a.x && pos.x + size.x > pos_a.x
+            && pos.y < pos_a.y + size_a.y && pos.y + size.y > pos_a.y);
     }
     
     return false;

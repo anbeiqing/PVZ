@@ -15,7 +15,7 @@ BattleLevel::BattleLevel()
 
 
 	GameStatics::CreateObject<PeaShooter>(Vector2D(200, 200));
-	GameStatics::CreateObject<Zombie>(Vector2D(400, 175));
+	GameStatics::CreateObject<Zombie>(Vector2D(300, 175));
 	GameStatics::CreateObject<Sun> (Vector2D(200, 0));
 }
 

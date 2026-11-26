@@ -37,6 +37,7 @@ void Animator::SetNode(std::string nodeName)
 {
 	if (aniNode)aniNode->clock.Stop();
 	aniNode = &(animations.find(nodeName)->second);
+	aniNode->clock.Continue();
 
 }
 
