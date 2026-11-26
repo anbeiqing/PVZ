@@ -1,5 +1,6 @@
 #include "InputComponent.h"
 #include<Windows.h>
+#include<easyx.h>
 
 void InputComponent::SetMapping(std::string mappingname, int value)
 {
@@ -10,6 +11,9 @@ void InputComponent::Update()
 {
 	POINT point;
 	GetCursorPos(&point);
+	//GetCursorPos 得到的是屏幕坐标，而渲染用的是窗口客户区坐标，
+	//不转换的话所有鼠标判定都会整体偏移一个"窗口边框+标题栏"的距离
+	if (HWND hwnd = GetHWnd())ScreenToClient(hwnd, &point);
 	mousePos = Vector2D(float(point.x), float(point.y));
 	for (auto& mapping : mappings) {
 		KeyBindfo& info = callbacks[mapping.first];

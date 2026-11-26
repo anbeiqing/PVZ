@@ -7,6 +7,10 @@ public:
 	static GameInstance* GetGameInstance();
 	//控制器
 	static Controller* GetController();
+	//主相机在客户区坐标系下的偏移（没有相机时返回 0,0）
+	static Vector2D GetCameraPosition();
+	//把世界（渲染）坐标换算成窗口客户区坐标
+	static Vector2D WorldToScreen(const Vector2D& worldPos);
 	//创建游戏对象
 	template<typename T>
 	static T* CreateObject(Vector2D pos = Vector2D(0, 0));

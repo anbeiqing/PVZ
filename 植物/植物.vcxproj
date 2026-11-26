@@ -172,6 +172,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="sun.h" />
+    <ClInclude Include="SunFlower.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInterface.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="sun.cpp" />
+    <ClCompile Include="SunFlower.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="VisualInterface.cpp" />

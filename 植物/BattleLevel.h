@@ -11,6 +11,7 @@ class BattleLevel :public Level {
 public:
 	BattleLevel();
 	virtual void Update()override;
+	virtual void Render()override;
 
 
 };

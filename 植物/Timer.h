@@ -3,6 +3,8 @@
 #include<functional>
 #include<chrono>
 
+using std::chrono::milliseconds;
+
 
 class Timer final
 {
@@ -11,18 +13,20 @@ public:
     ~Timer() {mainWorld.Timers.erase(this);};
 
     template<typename T>
-    void Bind(double del, T* obj, void(T::* func)(),bool repeat = false) {
+    void Bind(double del, T* obj, void(T::* func)(),bool repeat = false,double firstDelay=-1) {
         callback = std::bind(func, obj);
         delay = std::chrono::duration<double>(del);
         lastTime = std::chrono::steady_clock::now();
+        if (firstDelay >= 0)lastTime -= milliseconds(int(1000 * (del- firstDelay)));
         bPersistent = repeat;
         mainWorld.Timers.insert(this);
 
     }
-    void Bind(double del, std::function<void()>func, bool repeat = false) {
+    void Bind(double del, std::function<void()>func, bool repeat = false, double firstDelay = -1) {
         callback = func;
         delay= std::chrono::duration<double>(del);
         lastTime = std::chrono::steady_clock::now();
+        if (firstDelay >= 0)lastTime -= milliseconds(int(1000 * (del - firstDelay)));
         bPersistent = repeat;
         mainWorld.Timers.insert(this);
 

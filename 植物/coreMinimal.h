@@ -37,8 +37,15 @@ struct Vector2D
 	Vector2D() :x(0), y(0) {}
 	Vector2D(float a, float b) :x(a),y(b){}
 
-
-
+	float Size() const
+	{
+		return sqrtf(x * x + y * y);
+	}
+	//获取单位向量
+	Vector2D Normalize() const
+	{
+		return Vector2D(x / Size(), y / Size());
+	}
 	static float Distance(const Vector2D& a, const Vector2D& b) {
 		return sqrtf((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 	}
@@ -48,6 +55,23 @@ struct Vector2D
 		float fsin = float(sin(rad));
 		float fcos = float(cos(rad));
 		return Vector2D(vec.x * fcos - vec.y * fsin, vec.x * fsin + vec.y * fcos);
+	}
+	//向量点积
+	static float DotProduct(const Vector2D& v1, const Vector2D& v2)
+	{
+		return v1.x * v2.x + v1.y * v2.y;
+	}
+
+	//向量叉积
+	static Vector2D CrossProduct(const Vector2D& v1, const Vector2D& v2)
+	{
+		return { v1.y * v2.x - v1.x * v2.y, v1.x * v2.y - v1.y * v2.x };
+	}
+	// 将向量 u 投影到向量 v 所在的直线上
+	static Vector2D ProjectVector(const Vector2D& u, const Vector2D& v)
+	{
+		float scalar = DotProduct(u, v) / v.Size();  // 计算投影向量的缩放因子
+		return v.Normalize() * scalar;
 	}
 
 	Vector2D operator+(const Vector2D& another) {
@@ -138,6 +162,32 @@ struct Transform
 		return Transform(Vector2D(0, 0), 0, Vector2D(1, 1));
 	}
 
+};
+enum class CombinePattern :unsigned char { Min, Mid, Max };
+
+/* 物理材质类 */
+struct PhysicsMaterial
+{
+	float friction;
+	float bounciness;
+	PhysicsMaterial() :friction(0.2f), bounciness(0) {}
+	PhysicsMaterial(float friction, float bounciness)
+		:friction(friction), bounciness(bounciness) {
+	}
+
+	//物理材质结合效果
+	static PhysicsMaterial Combine(const PhysicsMaterial& m1, const PhysicsMaterial& m2, CombinePattern pattern = CombinePattern::Mid)
+	{
+		if (pattern == CombinePattern::Mid)
+		{
+			return PhysicsMaterial((m1.friction + m2.friction) * 0.5f, (m1.bounciness + m2.bounciness) * 0.5f);
+		}
+		else
+		{
+			return pattern == CombinePattern::Min ? PhysicsMaterial(std::min(m1.friction, m2.friction), std::min(m1.bounciness, m2.bounciness))
+				: PhysicsMaterial(std::max(m1.friction, m2.friction), std::max(m1.bounciness, m2.bounciness));
+		}
+	}
 };
 
 //基础类
@@ -358,6 +408,8 @@ class GameInstance {
 class Level : public Base {
 public:
 	virtual void Update() override;
+	//关卡自己的渲染钩子：World::Render 渲染完所有场景图层后调用，用来画 HUD 等屏幕空间内容
+	virtual void Render();
 	
 };
 

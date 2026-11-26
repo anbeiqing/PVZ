@@ -2,55 +2,38 @@
 #include"SpriteRenderer.h"
 #include"Animator.h"
 #include"Collider.h"
+#include"Sprite.h"
 #include"RigidBody.h"
 
 
-class Sun :public StaticMesh
+class Sun :public Sprite
 {
+	SpriteRenderer* renderer ;
 	Animation ani;
 	Animator* animator;
 	CircleCollider* collider;
 	RigidBody* rigidbody;
+
+	int groundLine;
+
+	Timer DestroyTimerHandle;
+	bool bFading = false;
+	bool bGrowing = false;
+	bool bPicking = false;
 	
 
 public:
-	Sun() {
+	Sun();
+	virtual void Update()override;
 
-		SpriteRenderer* renderer = GetComponentByClass<SpriteRenderer>();
+	void Fall(int groundLine);
 
-		renderer->SetLayer(10);
-		animator = ConstructComponent<Animator>();
-		ani.Load("sun");
-		ani.SetInterval(0.1f);
+	void Throw(int groundLine);
 
-		collider = ConstructComponent<CircleCollider>();
-		collider->SetAttachTo(root);
-		collider->SetRadius(35);
-		collider->SetCollisionMode(CollisionMode::Collision);
-		
-
-		
-
-
-		animator->Insert("idle", ani);
-		animator->SetNode("idle");
-
-		rigidbody = ConstructComponent<RigidBody>();
-
-
+	//阳光圆心在窗口客户区上的位置
+	Vector2D GetScreenCenter() const;
+	//鼠标是否点在阳光上（客户区坐标判定，跟渲染位置一致）
+	bool IsMouseOverSun() const;
 	
-
-	}
-	virtual void Update()override {
-		StaticMesh::Update();
-		
-	}
-
-	void BeginOverlap(Collider* OverlapCom, Object* OverlapActor) {
-		;
-	}
-	void EndOverlap(Collider* OverlapCom, Object* OverlapActor) {
-		;
-	}
 
 };

@@ -248,6 +248,8 @@ void World::Render()
 		if (layer == nullptr)continue;
 		layer->Render();
 	}
+	//关卡自己的渲染（HUD）
+	if (currentLevel)currentLevel->Render();
 	for (auto& obj : UserInterfaces) {
 		obj->ShowInfoBoxs();
 	}
@@ -293,6 +295,11 @@ void World::Debug()
 void Level::Update()
 {
 	
+}
+
+void Level::Render()
+{
+
 }
 
 bool LayerSort::operator()(const LayerInterface* a, const LayerInterface* b) const

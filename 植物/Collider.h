@@ -65,6 +65,7 @@ class Collider :public SceneComponent
 {
 	friend class Controller;
 	friend class BigidBody;
+	friend class RigidBody;
 public:
 	enum ColliderShape{Circle,Box};
 	Collider() { mainWorld.GameColliders.insert(this); }
@@ -89,6 +90,7 @@ public:
 	CollisionDelegate OnComponentBeginOverlap;
 	CollisionDelegate OnComponentEndOverlap;
 protected:
+	PhysicsMaterial material;
 	ColliderShape shape = Circle;
 	virtual bool CollisionJudge(Collider* anther) = 0;
 	virtual bool IsMouseOver() = 0;//鼠标
@@ -97,10 +99,27 @@ private:
 	int Layer = 0;//优先级
 
 	CollisionMode mode = CollisionMode::Trigger;
-
+	Pair point{ -1, -1 }, point_1{ -1, -1 };
 	std::unordered_set<Collider*>collisions;
 	std::vector<Object*>aims;
 	std::vector<Collider*>collisions_to_rease;
+
+
+	//碰撞判断
+	static bool (*collisionJudgeMap[3])(Collider*, Collider*);
+	static bool collisionJudgeCircleToCircle(Collider* c1, Collider* c2);
+	static bool collisionJudgeCircleToBox(Collider* c1, Collider* c2);
+	static bool collisionJudgeBoxToBox(Collider* c1, Collider* c2);
+
+	HitResult CollisionHit(Collider* another);
+
+	//碰撞信息
+	static HitResult(*collisionHitMap[3])(Collider*, Collider*);
+	static HitResult collisionHitCircleToCircle(Collider* c1, Collider* c2);
+	static HitResult collisionHitCircleToBox(Collider* c1, Collider* c2);
+	static HitResult collisionHitBoxToBox(Collider* c1, Collider* c2);
+
+	RigidBody* rigidAttached = nullptr;//附着的刚体
 
 };
 //圆形碰撞
@@ -118,14 +137,24 @@ public:
 	void SetRadius(float ra) { radius = ra;radius_ini = ra / sqrtf(GetWorldScale().x * GetWorldScale().y); }
 };
 //矩形碰撞器
+
 class BoxCollider final :public Collider
 {
+	struct Rect
+	{
+		float left = 0, top = 0, right = 0, bottom = 0;
+	};
+	friend class Collider;
+	
+	Rect rect;
 	Vector2D size = Vector2D(0, 0);
 	Vector2D size_ini = Vector2D(0, 0);
 	virtual bool CollisionJudge(Collider* another)override;
 public:
 	BoxCollider() { shape = Box; }
 	virtual void Update()override;
+	Rect GetRect()const { return rect; }
+	static Vector2D GetOverlapRect(const Rect& r1, const Rect& r2);
 	virtual void DrawDebugLine()override;
 	virtual bool IsMouseOver()override;
 	Vector2D GetSize()const { return size; }
