@@ -336,6 +336,9 @@ void World::Render()
 
 void World::Input()
 {
+	//UI 的命中检测依赖 InputComponent 里缓存的鼠标位置，
+	//所以坐标要每帧无条件刷新，不能跟着控制器一起被跳过
+	InputComponent::UpdateMouseState();
 	if (!mainController)return;
 	mainController->PickInfo();
 }

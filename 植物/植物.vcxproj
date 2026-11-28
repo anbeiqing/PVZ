@@ -165,6 +165,8 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="BaseBullet.h" />
     <ClInclude Include="BasePlant.h" />
+    <ClInclude Include="MenuLevel.h" />
+    <ClInclude Include="MenuUI.h" />
     <ClInclude Include="PeaShooter.h" />
     <ClInclude Include="Pea.h" />
     <ClInclude Include="Platform.h" />
@@ -201,6 +203,8 @@
     <ClCompile Include="GameStatic.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MenuLevel.cpp" />
+    <ClCompile Include="MenuUI.cpp" />
     <ClCompile Include="Pea.cpp" />
     <ClCompile Include="PeaShooter.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

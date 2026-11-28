@@ -42,7 +42,8 @@ public:
 		
 		mainWorld.gameInstance = new GameInstance;	
 		mainWorld.FPSClock = new Timer;
-		GameStatics::OpenLevel("Battle");
+		GameStatics::OpenLevel("Menu");
+		//GameStatics::OpenLevel("Battle");
 
 	
 

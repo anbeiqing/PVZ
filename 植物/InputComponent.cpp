@@ -9,12 +9,7 @@ void InputComponent::SetMapping(std::string mappingname, int value)
 
 void InputComponent::Update()
 {
-	POINT point;
-	GetCursorPos(&point);
-	//GetCursorPos 得到的是屏幕坐标，而渲染用的是窗口客户区坐标，
-	
-	if (HWND hwnd = GetHWnd())ScreenToClient(hwnd, &point);
-	mousePos = Vector2D(float(point.x), float(point.y));
+	UpdateMouseState();
 	for (auto& mapping : mappings) {
 		KeyBindfo& info = callbacks[mapping.first];
 		if (GetAsyncKeyState(mapping.second) & 0x8000)
@@ -43,5 +38,14 @@ Vector2D InputComponent::GetMousePosition()
 bool InputComponent::IsMouseButtonPressed()
 {
 	return GetAsyncKeyState(VK_LBUTTON)&0x8000;
+}
+void InputComponent::UpdateMouseState()
+{
+	POINT point;
+	GetCursorPos(&point);
+	//GetCursorPos 得到的是屏幕坐标，而渲染用的是窗口客户区坐标
+	if (HWND hwnd = GetHWnd())ScreenToClient(hwnd, &point);
+	mousePos = Vector2D(float(point.x), float(point.y));
+
 }
 Vector2D InputComponent::mousePos = {};

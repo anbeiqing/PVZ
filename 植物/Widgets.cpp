@@ -479,8 +479,11 @@ void Button::LoadClickPicture(std::string path)
 
 bool Button::IsMousePressed()
 {
-    Controller* c = GameStatics::GetController();
-    return c && IsMouseOn() && c->IsMouseClicked();
+    //鼠标按下状态本身就是静态输入，不需要控制器；
+    //菜单关没有控制器时回退到静态接口，否则按钮永远点不动
+    if (Controller* c = GameStatics::GetController())
+        return IsMouseOn() && c->IsMouseClicked();
+    return IsMouseOn() && InputComponent::IsMouseButtonPressed();
    
 }
 

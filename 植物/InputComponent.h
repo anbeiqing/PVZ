@@ -28,6 +28,8 @@ public:
 	virtual void Update();
 	static Vector2D GetMousePosition();
 	static bool IsMouseButtonPressed();
+	//刷新鼠标位置
+	static void UpdateMouseState();
 
 private:
 	std::map<std::string, int>mappings;

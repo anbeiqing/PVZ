@@ -114,6 +114,12 @@
     <ClInclude Include="Wallnut.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MenuUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuLevel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="coreMinimal.cpp">
@@ -207,6 +213,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Wallnut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuLevel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

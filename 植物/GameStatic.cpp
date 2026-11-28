@@ -1,6 +1,7 @@
 #include "GameStatic.h"
 #include"Camera.h"
 #include"BattleLevel.h"
+#include"MenuLevel.h"
 
 GameInstance* GameStatics::GetGameInstance()
 {
@@ -30,6 +31,7 @@ void GameStatics::OpenLevel(std::string levelName)
 }
 Level* CreateLevelByName(const std::string& levelName)
 {
+	if (levelName == "Menu")return new MenuLevel;
 	if (levelName == "Battle")return new BattleLevel;
 	fprintf(stderr, "[OpenLevel] unknown level name: %s\n", levelName.c_str());
 	return nullptr;

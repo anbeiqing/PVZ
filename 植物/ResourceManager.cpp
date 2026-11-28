@@ -96,6 +96,11 @@ void ResourceManager::Initialize()
 	Load("card8", "res/images/cards/card8.png", 54, 77);
 	Load("black", "res/images/cards/black.png", 54, 77);
 	Load("gray", "res/images/cards/black.png", 54, 77);
+
+	//Menu
+	Load("surface", "res/images/Menu/Surface_800.png", 800, 600);
+	Load("adventure", "res/images/Menu/Adventure.png", 331, 145);
+	Load("adventure_down", "res/images/Menu/Adventure_1.png", 331, 145);
 	
 	
 }
