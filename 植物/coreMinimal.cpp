@@ -9,6 +9,7 @@
 #include"UserInterface.h"
 
 
+
  extern World mainWorld{};
 
 void Component::Update()
@@ -180,6 +181,55 @@ void Object::Destory()
 	}
 }
 
+void World::ClearScene()
+{
+	mainController = nullptr;
+	mainCamera = nullptr;
+
+	//清理对象，先走通道全部进入to_delete,后销毁
+	std::set<Object*> snapshot(GameObjects);
+	for (auto& obj : snapshot) {
+		obj->Destory();
+	}
+	for (auto& obj : GameObjects_to_delete) {
+		GameObjects.erase(obj);
+		delete obj;
+		
+	}
+
+	//清理UI
+	GameObjects_to_delete.clear();
+	for (auto& it : UserInterfaces) {
+		it->RemoveFromViewport();
+	}
+	for (auto& ui : UserInterfaces_to_delete) {
+		UserInterfaces.erase(ui);
+		delete ui;
+	}
+	UserInterfaces_to_delete.clear();
+
+	//删除残余碰撞
+	GameColliders_to_clear.clear();
+
+	//删关卡
+	if (currentLevel) currentLevel->EndPlay();
+	delete currentLevel;
+	currentLevel = nullptr;
+}
+
+void World::ApplyPendingLevel()
+{
+	if (pendingLevelName.empty())return;
+	
+	std::string name = pendingLevelName;
+	pendingLevelName.clear();
+	ClearScene();
+
+	currentLevel = CreateLevelByName(name);
+	if (!currentLevel)return;
+	currentLevel->BeginPlay(); // 最后让新关卡建自己的对象
+}
+
 void World::Update()
 {
 	//碰撞信息
@@ -237,6 +287,8 @@ void World::Update()
 	for (auto& obj : GameObjects) {
 		obj->Update();
 	}
+	//关卡每帧更新（现在才真正被调用)
+	if (currentLevel) currentLevel->Update();
 	for (auto& obj : GameObjects_to_delete) {
 		GameObjects.erase(obj);
 		delete obj;
@@ -257,6 +309,8 @@ void World::Update()
 		if (Timers.find(timer) == Timers.end())continue;//回调里已被销毁
 		timer->Execute();
 	}
+	//帧末统一处理关卡切换请求
+	ApplyPendingLevel();
 }
 
 void World::Render()
@@ -282,11 +336,13 @@ void World::Render()
 
 void World::Input()
 {
+	if (!mainController)return;
 	mainController->PickInfo();
 }
 
 void World::Update_()
 {
+	if (!mainCamera)return;
 	mainCamera->Calculate();
 }
 
@@ -335,3 +391,4 @@ bool ColliderSort::operator()(const Collider* a, const Collider* b) const
 	else
 		return a->GetLayer() < b->GetLayer();
 }
+

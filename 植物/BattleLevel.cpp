@@ -44,3 +44,9 @@ void BattleLevel::Render()
 	settextstyle(20, 0, "微软雅黑");
 	//outtextxy(22, 28, (std::string("阳光:") + std::to_string(sunshine)).c_str());
 }
+
+void BattleLevel::BeginPlay()
+{
+	//控制器会顺带创建相机并登记 mainWorld.mainCamera
+	GameStatics::CreateController<BattleController>();
+}
