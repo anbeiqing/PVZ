@@ -12,6 +12,7 @@ public:
 	BattleLevel();
 	virtual void Update()override;
 	virtual void Render()override;
+	virtual void BeginPlay() override;
 
 
 };

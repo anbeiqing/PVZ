@@ -1,5 +1,6 @@
 #include "GameStatic.h"
 #include"Camera.h"
+#include"BattleLevel.h"
 
 GameInstance* GameStatics::GetGameInstance()
 {
@@ -25,5 +26,12 @@ Vector2D GameStatics::WorldToScreen(const Vector2D& worldPos)
 
 void GameStatics::OpenLevel(std::string levelName)
 {
-    ;
+	mainWorld.pendingLevelName = levelName;
 }
+Level* CreateLevelByName(const std::string& levelName)
+{
+	if (levelName == "Battle")return new BattleLevel;
+	fprintf(stderr, "[OpenLevel] unknown level name: %s\n", levelName.c_str());
+	return nullptr;
+}
+

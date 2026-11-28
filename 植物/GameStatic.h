@@ -7,6 +7,10 @@ public:
 	static GameInstance* GetGameInstance();
 	//控制器
 	static Controller* GetController();
+
+	template<typename T>
+	static T* CreateController();
+
 	//主相机在客户区坐标系下的偏移（没有相机时返回 0,0）
 	static Vector2D GetCameraPosition();
 	//把世界（渲染）坐标换算成窗口客户区坐标
@@ -44,6 +48,14 @@ inline T* GameStatics::CreateObject(Vector2D pos)
 			return pObj;
 		}
 		return nullptr;
+}
+
+template<typename T>
+inline T* GameStatics::CreateController()
+{
+	T* c = CreateObject<T>();
+	mainWorld.mainController = c;
+	return c;
 }
 
 template<typename T>

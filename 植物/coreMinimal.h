@@ -419,10 +419,20 @@ class GameInstance {
 class Level : public Base {
 public:
 	virtual void Update() override;
+	virtual ~Level() = default;
 	//关卡自己的渲染钩子：World::Render 渲染完所有场景图层后调用，用来画 HUD 等屏幕空间内容
 	virtual void Render();
+
+	//关卡创建后调用一次：在这里创建关卡自己的对象/控制器
+	virtual void BeginPlay() {}
+	//关卡销毁前调用
+	virtual void EndPlay() {}
+	//调试用，方便在日志里看当前是哪一关
+	virtual std::string GetLevelName() const { return "Level"; }
 	
 };
+//关卡工厂：按名字创建关卡，名字未知返回 nullptr
+Level* CreateLevelByName(const std::string& levelName);
 
 
 
@@ -488,8 +498,17 @@ class World final {
 	std::set<class BoxCollider*>Colliders;
 
 	//游戏单例
-	
+	//当前关卡
 	Level* currentLevel = nullptr;
+	//本帧请求切换到的关卡：只登记不执行，帧末统一切换（避免和 1ms 线程抢对象）
+	std::string pendingLevelName;
+	//清空当前场景（对象/UI/关卡），切换关卡前调用
+	void ClearScene();
+	//若有待切换的关卡，执行切换
+	void ApplyPendingLevel();
+
+
+
 	class Controller* mainController = nullptr;
     Camera* mainCamera =nullptr;
 	GameInstance* gameInstance = nullptr;

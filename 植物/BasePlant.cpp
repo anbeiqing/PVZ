@@ -17,7 +17,7 @@ BasePlant::BasePlant()
 Vector2D BasePlant::GetRenderSize()const
 {
 	//动画播放时 renderer 的 sprite 会被 Animator 每帧换成"当前帧"图片，尺寸才是真实的一帧；
-	//刚创建、Animator 还没 Update 过时 sprite 仍是整张图集（例如向日葵 483x320），直接用会算错
+	
 	if (ani) {
 		if (IMAGE* frame = ani->GetCurrentImage()) {
 			return Vector2D(float(frame->getwidth()), float(frame->getheight()));

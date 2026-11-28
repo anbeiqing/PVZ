@@ -21,6 +21,8 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+	//相机被销毁时，如果它还是全局主相机，就把全局指针断掉，避免其他代码拿到悬空指针
+	if (mainWorld.mainCamera == this)mainWorld.mainCamera = nullptr;
 }
 
 void Camera::Update()

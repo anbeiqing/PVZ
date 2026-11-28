@@ -14,7 +14,7 @@ protected:
 	Widget* const rootCanvas = new Widget;
 public:
 	UserInterface();
-	~UserInterface() { for (auto& widget : widgets)delete widget; }
+	~UserInterface() { for (auto& widget : widgets)delete widget; delete rootCanvas;}
 
 	virtual void Update();
 

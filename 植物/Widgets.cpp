@@ -479,8 +479,9 @@ void Button::LoadClickPicture(std::string path)
 
 bool Button::IsMousePressed()
 {
-    return IsMouseOn() && GameStatics::GetController()->IsMouseClicked();
-    return false;
+    Controller* c = GameStatics::GetController();
+    return c && IsMouseOn() && c->IsMouseClicked();
+   
 }
 
 void Bar::Update()

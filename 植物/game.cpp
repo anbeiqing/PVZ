@@ -9,10 +9,10 @@
 #include"Math.h"
 #include"SpriteRenderer.h"
 #include"ResourceManager.h"
-#include"BattleLevel.h"
+
 #include"Controller.h"
 #include"CollisionManager.h"
-#include"BattleController.h"
+
 #include"GameStatic.h"
 
 
@@ -39,11 +39,10 @@ public:
 		mainWorld.collisionManager->Initialize();
 
 		//初始化游戏世界
-		mainWorld.currentLevel = new BattleLevel;
-		mainWorld.gameInstance = new GameInstance;
-		mainWorld.mainController = GameStatics::CreateObject<BattleController>();
+		
+		mainWorld.gameInstance = new GameInstance;	
 		mainWorld.FPSClock = new Timer;
-
+		GameStatics::OpenLevel("Battle");
 
 	
 
@@ -62,7 +61,8 @@ public:
 
 
 	static void Exit() {
-		
+		closegraph();
+		exit(0);
 	}
 	
 

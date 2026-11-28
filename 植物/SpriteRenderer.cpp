@@ -5,6 +5,7 @@
 
 void SpriteRenderer::Render()
 {
+	if (!mainWorld.mainCamera)return;
 	if (sprite) {
 		Vector2D pos = GetWorldPosition() - mainWorld.mainCamera->GetCameraPosition();
 			
