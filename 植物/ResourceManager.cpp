@@ -101,6 +101,10 @@ void ResourceManager::Initialize()
 	Load("surface", "res/images/Menu/Surface_800.png", 800, 600);
 	Load("adventure", "res/images/Menu/Adventure.png", 331, 145);
 	Load("adventure_down", "res/images/Menu/Adventure_1.png", 331, 145);
+	//花瓶
+	Load("vase_glow", "res/images/Menu/VaseGlow.png", 128, 128);
+	Load("tip_help", "res/images/Menu/TipPanel_Help.png", 520, 230);
+	Load("tip_options", "res/images/Menu/TipPanel_Options.png", 520, 230);
 	
 	
 }
