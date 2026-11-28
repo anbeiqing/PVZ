@@ -51,6 +51,7 @@ enum KeyCode
 	VK_MButton = 4,
 	VK_WheeledUp = 5,
 	VK_WheeledDown = 6,
+	VK_Escape = 0x1B,
 	VK_A = 0x41,
 	VK_B,
 	VK_C,

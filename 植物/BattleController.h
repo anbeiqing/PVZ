@@ -27,6 +27,7 @@ public:
 	void SetSunshineNum(int num) { sunshineNum = num; }
 	void AddSunshineNum(int num) { sunshineNum += num; }
 	void PlantSeed();
+	void BackToMenu();
 	//天上掉阳光
 	void ProduceSun();
 

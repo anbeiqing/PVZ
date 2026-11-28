@@ -18,6 +18,9 @@ void BattleController::SetupInputComponent(InputComponent* inputComponent)
 
 	inputComponent->SetMapping("Plant", KeyCode::VK_LButton);
 	inputComponent->BindAction("Plant", InputType::Pressed, this, &BattleController::PlantSeed);
+
+	inputComponent->SetMapping("BackToMenu", KeyCode::VK_Escape);
+	inputComponent->BindAction("BackToMenu", InputType::Pressed, this, &BattleController::BackToMenu);
 }
 
 void BattleController::Update()
@@ -66,6 +69,11 @@ void BattleController::PlantSeed()
 		sunshineNum -= seedToPlant->GetCost();
 		seedToPlant = nullptr;
 	}
+}
+
+void BattleController::BackToMenu()
+{
+	GameStatics::OpenLevel("Menu");
 }
 
 void BattleController::ProduceSun()
