@@ -15,6 +15,12 @@ HitResult(*Collider::collisionHitMap[3])(Collider*, Collider*) =
 
 
 
+void Collider::Deactivate()
+{
+    Component::Deactivate();
+    mainWorld.GameColliders_to_clear.insert(this);
+}
+
 const std::vector<Object*>& Collider::GetCollisions(CollisionType type)
 {
     aims.clear();
@@ -124,6 +130,7 @@ bool CircleCollider::IsMouseOver()
 
 bool BoxCollider::CollisionJudge(Collider* another)
 {
+    
     if (another->GetShape() == Circle) {
         CircleCollider* circle = Cast<CircleCollider>(another);
         Vector2D pos_a = circle->GetWorldPosition()+ Vector2D(circle->GetRadius(), circle->GetRadius()), 

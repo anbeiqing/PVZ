@@ -2,6 +2,7 @@
 #include"coreMinimal.h"
 #include<unordered_map>
 #include<functional>
+#include"RigidBody.h"
 #include"CollisionManager.h"
 #include"Delegate.h"//AddDynamic/RemoveDynamic 宏统一由 Delegate.h 提供
 
@@ -67,6 +68,7 @@ class Collider :public SceneComponent
 	friend class BigidBody;
 	friend class RigidBody;
 public:
+	virtual void Deactivate()override;
 	enum ColliderShape{Circle,Box};
 	Collider() { mainWorld.GameColliders.insert(this); }
 	virtual ~Collider() { mainWorld.GameColliders.erase(this); Clear(); }

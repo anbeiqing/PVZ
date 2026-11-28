@@ -180,6 +180,7 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="VisualInterface.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Wallnut.h" />
     <ClInclude Include="Widgets.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
@@ -212,6 +213,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="VisualInterface.cpp" />
+    <ClCompile Include="Wallnut.cpp" />
     <ClCompile Include="Widgets.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>

@@ -29,4 +29,6 @@ public:
 	void PlantSeed();
 	//天上掉阳光
 	void ProduceSun();
+
+	void ProduceZombie();
 };

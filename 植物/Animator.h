@@ -61,6 +61,8 @@ class Animator : public Component
 public:
 	virtual void Update()override;
 	void Insert(std::string name, Animation& ani);
+	virtual void Activate()override;
+	virtual void Deactivate()override;
 
 	Animation* GetNode()const { return aniNode; }
 	//当前动画帧的图片（还没设过动画节点时返回空）

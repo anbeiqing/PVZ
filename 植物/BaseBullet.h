@@ -6,7 +6,7 @@ protected:
 	SpriteRenderer* renderer;
 	class CircleCollider* circle;
 
-	int damage = 1;
+	int damage = 10;
 public:
 	BaseBullet();
 	virtual void BeginPlay();

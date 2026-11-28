@@ -33,6 +33,18 @@ void Animator::Insert(std::string name, Animation& ani)
 	if(ani.images)animations.insert({name,ani});
 }
 
+void Animator::Activate()
+{
+	Component::Activate();
+	if (aniNode)aniNode->clock.Continue();
+}
+
+void Animator::Deactivate()
+{
+	Component::Deactivate();
+	if (aniNode)aniNode->clock.Stop();
+}
+
 void Animator::SetNode(std::string nodeName)
 {
 	if (aniNode)aniNode->clock.Stop();

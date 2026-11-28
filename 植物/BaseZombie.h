@@ -24,8 +24,8 @@ protected:
 	Animation die;
 
 	float speed =0.08f;
-	float blood = 10;
-	float damage=1;
+	float blood = 100;
+	float damage=2;
 
 	std::unordered_set<Object*>overlapPlants;
 	BasePlant* eatingPlant;

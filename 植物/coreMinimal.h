@@ -224,6 +224,8 @@ public:
 
 	//停用组件
 	virtual void Deactivate();
+
+	bool bIsEnabled = true;//是否激活
 };
 
 //场景组件，处理场景属性
@@ -244,6 +246,7 @@ public:
 
 	//删除所属组件
 	void DetachFrom(SceneComponent* par);
+	void AddPosition(int a, int b);
 	
 	virtual void Destruct() override;
 
@@ -479,6 +482,7 @@ class World final {
 	//渲染，碰撞
 	std::set<LayerInterface*,LayerSort>Layers;
 	std::unordered_set<class Collider*>GameColliders;
+	std::unordered_set<class Collider*>GameColliders_to_clear;
 	std::set<class Collider*, ColliderSort>ColliderZones[8][6];
 	std::set<LayerInterface*, LayerSort>UIdetectZones[8][6];
 	std::set<class BoxCollider*>Colliders;

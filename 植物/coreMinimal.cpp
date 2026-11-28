@@ -23,12 +23,12 @@ void Component::Destruct()
 
 void Component::Activate()
 {
-	;
+	bIsEnabled = true;;
 }
 
 void Component::Deactivate()
 {
-	;
+	bIsEnabled = false;
 }
 
 void SceneComponent::process_Destruct()
@@ -64,6 +64,12 @@ void SceneComponent::DetachFrom(SceneComponent* par)
 		parent = nullptr;
 		SetOwner(nullptr);
 	}
+}
+
+void SceneComponent::AddPosition(int a, int b)
+{
+	transform.position.x += a;
+	transform.position.y += b;
 }
 
 void SceneComponent::Destruct()
@@ -221,6 +227,8 @@ void World::Update()
 	}
 	//碰撞更新
 	for (auto& it : GameColliders)it->Erase();
+	for (auto& it : GameColliders_to_clear)it->Clear();
+	GameColliders_to_clear.clear();
 
 
 

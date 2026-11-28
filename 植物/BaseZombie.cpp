@@ -7,8 +7,9 @@ BaseZombie::BaseZombie()
 	renderer->SetLayer(2);
 	box = ConstructComponent<BoxCollider>();
 	box->SetAttachTo(root);
-	box->SetSize({ 95,140 });
+	box->SetSize({ 40,80 });
 	box->SetType(CollisionType::Zombie);//设置类型
+	box->AddPosition(15, 40);
 	ani = ConstructComponent<Animator>();
 
 

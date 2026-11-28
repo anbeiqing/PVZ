@@ -16,9 +16,9 @@ BattleLevel::BattleLevel()
 	bg0->GetComponentByClass<SpriteRenderer>()->LoadSprite("bg0");
 
 
-	GameStatics::CreateObject<PeaShooter>(Vector2D(200, 200));
-	GameStatics::CreateObject<SunFlower>(Vector2D(200, 100));
-	GameStatics::CreateObject<Zombie>(Vector2D(300, 175));
+	//GameStatics::CreateObject<PeaShooter>(Vector2D(200, 200));
+	//GameStatics::CreateObject<SunFlower>(Vector2D(200, 100));
+	GameStatics::CreateObject<Zombie>(Vector2D(500, 175));
 	//GameStatics::CreateObject<Sun> (Vector2D(200, 0));
 }
 

@@ -3,6 +3,7 @@
 #include "GameStatic.h"
 #include"PeaShooter.h"
 #include"SunFlower.h"
+#include"Wallnut.h"
 
 std::string plantName[] = { "豌豆射手","向日葵","樱桃炸弹","坚果","土豆地雷","寒冰射手","大嘴花","双发射手" };
 int plantPrice[] = { 100,50,150,50,25,175,150,200 };
@@ -84,6 +85,7 @@ void SeedUI::ReadyToPlant()
 		{
 		case 0: pController->seedToPlant = GameStatics::CreateObject<PeaShooter>(); break;
 		case 1: pController->seedToPlant = GameStatics::CreateObject<SunFlower>(); break;
+		case 3: pController->seedToPlant = GameStatics::CreateObject<Wallnut>(); break;
 		}
 
 		pController->AddSunshineNum(-plantPrice[number]);

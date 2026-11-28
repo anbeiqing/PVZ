@@ -7,12 +7,13 @@
 //植物基类
 class BasePlant :public Sprite
 {
+	friend class BattleController;
 protected:
 	SpriteRenderer* renderer;
 	BoxCollider* box;
 	Animator* ani;
 
-	float blood = 10;
+	float blood = 20;
 	int cost = 0;
 public:
 	BasePlant();

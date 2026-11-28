@@ -33,6 +33,7 @@ void BattleController::Update()
 	}
 
 	if (seedToPlant) {
+		seedToPlant->box->Deactivate();
 		//本工程里 屏幕位置 = 对象位置 × 2 - 摄像机位置
 		//（渲染器、碰撞盒都挂在 root 下，SceneComponent::GetWorldPosition 会把对象位置叠加两遍，
 		//  这是既有约定，渲染与碰撞是一致的，不要在这里"修"掉）
@@ -72,3 +73,9 @@ void BattleController::ProduceSun()
 	Sun* sunshine = GameStatics::CreateObject<Sun>(Vector2D(Math::RandInt(100, 700), 0));
 	if (sunshine)sunshine->Fall(Math::RandInt(250, 550));
 }
+
+void BattleController::ProduceZombie()
+{
+	;
+}
+
